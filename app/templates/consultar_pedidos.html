@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Pedidos - Caseiros Top</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Caseiros Top</h1>
+    <h2>Consulta de Pedidos</h2>
+
+    <p>
+        <a href="{{ url_for('main.home') }}">Voltar ao início</a>
+    </p>
+
+    {% with mensagens = get_flashed_messages() %}
+        {% for mensagem in mensagens %}
+            <p>{{ mensagem }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    {% for pedido in pedidos %}
+
+        <div class="pedido-card">
+
+            <h3>Pedido nº {{ pedido.id }}</h3>
+
+            <p>
+                <strong>Cliente:</strong>
+                {{ pedido.nome_cliente or "Não informado" }}
+            </p>
+
+            <p>
+                <strong>Data:</strong>
+                {{ pedido.data_criacao.strftime("%d/%m/%Y %H:%M") }}
+            </p>
+
+            <h3>Produtos do pedido</h3>
+
+            {% for item in pedido.itens %}
+                <p>
+                    {{ item.produto.nome }} —
+                    Quantidade: {{ item.quantidade }} —
+                    Preço unitário: R$ {{ "%.2f"|format(item.preco_unitario) }}
+                </p>
+            {% endfor %}
+
+            <p>
+                <strong>Status atual:</strong>
+                <span class="status-pedido">{{ pedido.status }}</span>
+            </p>
+
+            <form method="POST"
+                  action="{{ url_for('main.atualizar_status', pedido_id=pedido.id) }}">
+
+                <p>
+                    <label for="status-{{ pedido.id }}">
+                        Atualizar status:
+                    </label><br>
+
+                    <select id="status-{{ pedido.id }}" name="status" required>
+                        <option value="Recebido"
+                            {% if pedido.status == "Recebido" %}selected{% endif %}>
+                            Recebido
+                        </option>
+
+                        <option value="Em preparação"
+                            {% if pedido.status == "Em preparação" %}selected{% endif %}>
+                            Em preparação
+                        </option>
+
+                        <option value="Pronto"
+                            {% if pedido.status == "Pronto" %}selected{% endif %}>
+                            Pronto
+                        </option>
+
+                        <option value="Entregue"
+                            {% if pedido.status == "Entregue" %}selected{% endif %}>
+                            Entregue
+                        </option>
+                    </select>
+                </p>
+
+                <button type="submit">Salvar status</button>
+
+            </form>
+
+        </div>
+
+    {% else %}
+        <p>Nenhum pedido cadastrado ainda.</p>
+    {% endfor %}
+
+</body>
+</html>
