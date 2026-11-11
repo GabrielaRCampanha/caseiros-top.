@@ -117,3 +117,51 @@ li {
         padding: 18px;
     }
 }
+
+/* ACESSIBILIDADE - MODO DE ALTO CONTRASTE */
+body.alto-contraste {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+body.alto-contraste h1,
+body.alto-contraste h2,
+body.alto-contraste p,
+body.alto-contraste label {
+    color: #ffffff;
+}
+
+body.alto-contraste a,
+body.alto-contraste button {
+    background-color: #ffff00;
+    color: #000000;
+    border: 2px solid #ffffff;
+    font-weight: bold;
+}
+
+body.alto-contraste form {
+    background-color: #000000;
+    border: 2px solid #ffffff;
+}
+
+body.alto-contraste input,
+body.alto-contraste select {
+    background-color: #000000;
+    color: #ffffff;
+    border: 2px solid #ffff00;
+}
+
+body.alto-contraste a:hover,
+body.alto-contraste button:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* DESTAQUE PARA NAVEGAÇÃO PELO TECLADO */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 3px;
+}

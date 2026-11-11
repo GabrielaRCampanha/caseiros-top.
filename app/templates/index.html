@@ -37,5 +37,29 @@
         <a href="{{ url_for('main.financeiro') }}">Controle Financeiro</a>
     </p>
 
+    <h2>Acessibilidade</h2>
+
+    <button
+        type="button"
+        id="botao-contraste"
+        aria-pressed="false"
+    >
+        Ativar alto contraste
+    </button>
+
+    <script>
+        const botaoContraste = document.getElementById("botao-contraste");
+
+        botaoContraste.addEventListener("click", function () {
+            const ativado = document.body.classList.toggle("alto-contraste");
+
+            botaoContraste.setAttribute("aria-pressed", ativado);
+
+            botaoContraste.textContent = ativado
+                ? "Desativar alto contraste"
+                : "Ativar alto contraste";
+        });
+    </script>
+
 </body>
 </html>
