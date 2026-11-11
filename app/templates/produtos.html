@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos - Caseiros Top</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Caseiros Top</h1>
+    <h2>Cadastro de Produtos</h2>
+
+    <p>
+        <a href="{{ url_for('main.home') }}">Voltar ao início</a>
+    </p>
+
+    {% with mensagens = get_flashed_messages() %}
+        {% for mensagem in mensagens %}
+            <p>{{ mensagem }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <h2>Adicionar novo produto</h2>
+
+        <p>
+            <label for="nome">Nome do produto:</label><br>
+            <input
+                type="text"
+                id="nome"
+                name="nome"
+                maxlength="100"
+                placeholder="Ex.: Pastel de queijo"
+                required
+            >
+        </p>
+
+        <p>
+            <label for="categoria">Categoria:</label><br>
+            <select id="categoria" name="categoria" required>
+                <option value="">Selecione</option>
+                <option value="Pastéis">Pastéis</option>
+                <option value="Sucos">Sucos</option>
+                <option value="Refrigerantes">Refrigerantes</option>
+            </select>
+        </p>
+
+        <p>
+            <label for="preco">Preço (R$):</label><br>
+            <input
+                type="number"
+                id="preco"
+                name="preco"
+                min="0.01"
+                step="0.01"
+                placeholder="Ex.: 12,00"
+                required
+            >
+        </p>
+
+        <button type="submit">Cadastrar produto</button>
+
+    </form>
+
+    <h2>Produtos cadastrados</h2>
+
+    {% for produto in produtos %}
+        <form>
+            <p><strong>{{ produto.nome }}</strong></p>
+            <p>Categoria: {{ produto.categoria }}</p>
+            <p>Preço: R$ {{ "%.2f"|format(produto.preco) }}</p>
+        </form>
+    {% else %}
+        <p>Nenhum produto cadastrado ainda.</p>
+    {% endfor %}
+
+</body>
+</html>

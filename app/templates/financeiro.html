@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financeiro - Caseiros Top</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Caseiros Top</h1>
+    <h2>Controle Financeiro</h2>
+
+    <a href="{{ url_for('main.home') }}">Voltar ao início</a>
+
+    {% with mensagens = get_flashed_messages() %}
+        {% for mensagem in mensagens %}
+            <p>{{ mensagem }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <h2>Resumo financeiro</h2>
+
+    <p>
+        Total de entradas:
+        R$ {{ "%.2f"|format(entradas) }}
+    </p>
+
+    <p>
+        Total de saídas:
+        R$ {{ "%.2f"|format(saidas) }}
+    </p>
+
+    <p>
+        <strong>
+            Saldo atual:
+            R$ {{ "%.2f"|format(saldo) }}
+        </strong>
+    </p>
+
+    <h2>Registrar movimentação</h2>
+
+    <form method="POST" action="{{ url_for('main.cadastrar_movimentacao_financeira') }}">
+
+        <p>
+            <label for="tipo">Tipo de movimentação:</label><br>
+            <select id="tipo" name="tipo" required>
+                <option value="">Selecione</option>
+                <option value="Entrada">Entrada</option>
+                <option value="Saída">Saída</option>
+            </select>
+        </p>
+
+        <p>
+            <label for="descricao">Descrição:</label><br>
+            <input
+                type="text"
+                id="descricao"
+                name="descricao"
+                maxlength="200"
+                required
+            >
+        </p>
+
+        <p>
+            <label for="valor">Valor (R$):</label><br>
+            <input
+                type="number"
+                id="valor"
+                name="valor"
+                min="0.01"
+                step="0.01"
+                required
+            >
+        </p>
+
+        <button type="submit">Registrar movimentação</button>
+
+    </form>
+
+    <h2>Histórico financeiro</h2>
+
+    {% for movimentacao in movimentacoes %}
+        <p>
+            {{ movimentacao.data_criacao.strftime("%d/%m/%Y %H:%M") }}
+            -
+            {{ movimentacao.tipo }}
+            -
+            {{ movimentacao.descricao }}
+            -
+            R$ {{ "%.2f"|format(movimentacao.valor) }}
+        </p>
+    {% else %}
+        <p>Nenhuma movimentação financeira registrada ainda.</p>
+    {% endfor %}
+
+</body>
+</html>
